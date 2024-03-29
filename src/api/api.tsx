@@ -8,10 +8,22 @@ interface PokemonListing {
   }>;
 }
 interface PokemonDetailData {
-  id: number;
+  abilities: Array<{
+    ability: {
+      name: string;
+      url: string;
+    };
+  }>;
   name: string;
-  height: number;
-  weight: number;
+  stats: Array<{
+    base_stat: number;
+    effort: number;
+    stat: {
+      name: string;
+      url: string;
+    };
+  }>;
+
   types: Array<{
     slot: number;
     type: {

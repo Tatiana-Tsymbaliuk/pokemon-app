@@ -1,36 +1,48 @@
+import React, { useState } from "react";
 import Draggable from "react-draggable";
 import api from "../../api/api";
+import PokemonDetails from "../PokemonDetails/PokemonDetails";
 
 const { usePokemonListQuery } = api;
-const PokemonList = ({
-  onPokemonSelected,
-}: {
-  onPokemonSelected: (pokemonName: string) => void;
-}) => {
+
+const PokemonList: React.FC = () => {
   const { isUninitialized, isLoading, isError, data } = usePokemonListQuery();
+  const [selectedPokemon, setSelectPokemon] = useState<string | undefined>(
+    undefined
+  );
+
+  const onPokemonSelected = (name: string) => {
+    setSelectPokemon(name);
+  };
 
   if (isLoading || isUninitialized) {
-    return <p>loading, please wait</p>;
+    return <p>Loading, please wait</p>;
   }
 
   if (isError) {
-    return <p>something went wrong</p>;
+    return <p>Something went wrong</p>;
   }
 
   return (
     <div>
       <h2>List pokemons</h2>
-      <ul>
+      <ol>
         {data.results.map((pokemon) => (
           <Draggable>
             <li key={pokemon.name}>
-              <button onClick={() => onPokemonSelected(pokemon.name)}>
+              <div onClick={() => onPokemonSelected(pokemon.name)}>
                 {pokemon.name}
-              </button>
+              </div>
             </li>
           </Draggable>
         ))}
-      </ul>
+      </ol>
+      {selectedPokemon && (
+        <>
+          <PokemonDetails pokemonName={selectedPokemon} />
+          <button onClick={() => setSelectPokemon(undefined)}>Close</button>
+        </>
+      )}
     </div>
   );
 };
