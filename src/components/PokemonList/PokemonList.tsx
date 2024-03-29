@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
 import api from "../../api/api";
 import PokemonDetails from "../PokemonDetails/PokemonDetails";
+import "./PokemonList.css";
 
 const { usePokemonListQuery } = api;
 
@@ -10,6 +11,7 @@ const PokemonList: React.FC = () => {
   const [selectedPokemon, setSelectPokemon] = useState<string | undefined>(
     undefined
   );
+  const draggableRef = useRef<HTMLLIElement>(null);
 
   const onPokemonSelected = (name: string) => {
     setSelectPokemon(name);
@@ -28,9 +30,12 @@ const PokemonList: React.FC = () => {
       <h2>List pokemons</h2>
       <ol>
         {data.results.map((pokemon) => (
-          <Draggable>
-            <li key={pokemon.name}>
-              <div onClick={() => onPokemonSelected(pokemon.name)}>
+          <Draggable key={pokemon.name} nodeRef={draggableRef}>
+            <li key={pokemon.name} ref={draggableRef}>
+              <div
+                className="pokemon-list"
+                onClick={() => onPokemonSelected(pokemon.name)}
+              >
                 {pokemon.name}
               </div>
             </li>
@@ -38,10 +43,10 @@ const PokemonList: React.FC = () => {
         ))}
       </ol>
       {selectedPokemon && (
-        <>
+        <div className="pokemon-details-container">
           <PokemonDetails pokemonName={selectedPokemon} />
           <button onClick={() => setSelectPokemon(undefined)}>Close</button>
-        </>
+        </div>
       )}
     </div>
   );

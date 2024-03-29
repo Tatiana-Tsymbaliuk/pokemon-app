@@ -1,5 +1,5 @@
 import api from "../../api/api";
-
+import "./PokemonDetails.css";
 const { usePokemonDetailQuery } = api;
 
 const listFormatter = new Intl.ListFormat("en-GB", {
@@ -22,24 +22,24 @@ const PokemonDetails = ({ pokemonName }: { pokemonName: string }) => {
 
   return (
     <div>
+      <img
+        className="pokemon-img"
+        src={data.sprites.front_default}
+        alt={data.name}
+      />
       <h2>{data.name}</h2>
-      <img src={data.sprites.front_default} alt={data.name} />
-
       <div>
         Abilities:
         {listFormatter.format(data.abilities.map((item) => item.ability.name))}
       </div>
-      <ol>
+      <ul>
         Characteristic:
-        {data?.stats.slice(0, 4).map((stat) => (
-          <li key={stat.stat.name}>{stat.stat.name}</li>
+        {data?.stats.slice(0, 4).map((sta, index) => (
+          <li key={index}>
+            {sta.stat.name}:{sta.base_stat}
+          </li>
         ))}
-      </ol>
-
-      <div>
-        types:
-        {listFormatter.format(data.types.map((item) => item.type.name))}
-      </div>
+      </ul>
     </div>
   );
 };
