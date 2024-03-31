@@ -1,4 +1,3 @@
-import React from "react";
 import PokemonList from "./components/PokemonList/PokemonList";
 // import PokemonDetails from "./components/PokemonDetails/PokemonDetails";
 const App = () => {
